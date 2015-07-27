@@ -1,7 +1,7 @@
 {
   "name": "tnt.rest",
   "version": "0.0.0",
-  "description": "General wrapper library to retrieve data via RESTful APIs",
+  "description": "Wrapper library to retrieve data via RESTful APIs",
   "main": "index.js",
   "directories": {
     "test": "test"
