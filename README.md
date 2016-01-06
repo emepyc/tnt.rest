@@ -1,7 +1,4 @@
 
-[![Build Status](https://travis-ci.org/emepyc/tnt.rest.svg?branch=master)](https://travis-ci.org/emepyc/tnt.rest)
-[![npm version](https://badge.fury.io/js/tnt.rest.svg)](http://badge.fury.io/js/tnt.rest)
-
 # TnT Rest
 `tnt.rest` is a library to retrieve data from RESTful APIs.
 
