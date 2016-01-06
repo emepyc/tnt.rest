@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<head>
+    <script src="../../build/tnt.rest.js"></script>
+</head>
+
+<body>
+    <div id="mydiv"></div>
+    <script>
+    var rest = tnt.rest();
+    var url = rest.url()
+        .domain("rest.ensembl.org")
+        .endpoint("xrefs/symbol/:species/:id")
+        .parameters({
+            "species": "human",
+            "id": "BRCA1",
+        });
+
+    rest.call(url)
+        .then (function (resp) {
+            console.log(resp);
+            var data = resp.body;
+            document.getElementById("mydiv").appendChild(document.createElement("pre")).innerText=JSON.stringify(data, null, '  ');
+        });
+    </script>
+</body>

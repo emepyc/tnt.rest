@@ -1,7 +1,7 @@
 {
   "name": "tnt.rest",
   "version": "0.0.0",
-  "description": "Wrapper library to retrieve data via RESTful APIs",
+  "description": "Library to retrieve data via RESTful APIs",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -26,26 +26,24 @@
   },
   "homepage": "https://github.com/emepyc/tnt.rest",
   "devDependencies": {
-    "browserify": "~4.2.0",
-    "chai": "^1.9.1",
-    "del": "^1.2.0",
-    "gulp": "^3.8.8",
-    "gulp-browserify": "^0.5.0",
-    "gulp-gzip": "0.0.8",
-    "gulp-jshint": "^1.8.4",
-    "gulp-mocha": "^1.0.0",
-    "gulp-rename": "^1.2.0",
-    "gulp-uglify": "^1.0.1",
-    "gulp-watch": "^1.0.2",
-    "mkdirp": "^0.5.0",
-    "mocha": "~1.20.1",
-    "uglify-js": "~2.4.15",
-    "watchify": "^1.0.2"
+    "chai": "^3.4.1",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-gzip": "^1.2.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-mocha": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.1",
+    "gulp-watch": "^4.3.5",
+    "jshint": "^2.8.0",
+    "mkdirp": "^0.5.1",
+    "xmldoc": "^0.4.0"
   },
   "dependencies": {
-    "es6-promise": "^2.0.1",
-    "httpplease": "^0.15.2",
+    "es6-promise": "^3.0.2",
+    "httpplease": "^0.16.4",
     "httpplease-promises": "^0.3.0",
-    "tnt.api": "^0.0.0"
+    "tnt.api": "0.0.1"
   }
 }

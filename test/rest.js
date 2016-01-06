@@ -1,79 +1,200 @@
 var tnt_rest = require("../index.js");
 var assert = require("chai").assert;
+var xmldoc = require('xmldoc');
 
 describe('TnT REST', function () {
-    this.timeout(5000);
 
     beforeEach (function () {
         rest = tnt_rest();
     });
 
-    it("Exists and is called rest", function () {
-        assert.isDefined(tnt_rest);
-    });
-
-    it("Has a prefix method", function () {
-        assert.isDefined(rest.prefix);
-        assert.isFunction(rest.prefix);
-        rest.prefix("my/prefix");
-        assert.equal(rest.prefix(), "my/prefix");
-    });
-
-    it("Has a domain method", function () {
-        assert.isDefined(rest.domain);
-        assert.isFunction(rest.domain);
-        rest.domain("mydomain");
-        assert.equal(rest.domain(), "mydomain");
-    });
-
-    it("Has a port method", function () {
-        assert.isDefined(rest.port);
-        assert.isFunction(rest.port);
-        rest.port(4444);
-        assert.equal(rest.port(), 4444);
-    });
-
-    it("Has the parameters method", function () {
-        assert.isDefined(rest.parameters);
-        assert.isFunction(rest.parameters);
-        rest.parameters({
-            "option1": 1,
-            "option2": 2
-        });
-        var p = rest.parameters();
-        assert.property(p, "option1");
-        assert.equal(p.option1, 1);
-        assert.equal(p.option2, 2);
-    });
-
-    it ("Has a url method", function () {
-        assert.isDefined(rest.url);
-        assert.isFunction(rest.url);
-    });
-
-    describe ("ensembl rest api", function () {
+    describe ('url', function () {
         beforeEach (function () {
-            // Being friendly with the REST API. The tests are delayed this time
-            delay = 300;
-            rest = rest
-                .domain("rest.ensembl.org");
+            url = rest.url();
         });
-        it ("can connect to the region endpoin (GET)", function (done) {
-            //  "https://rest.ensembl.org/xrefs/symbol/human/BRCA2.json?object_type=gene");
-            rest
+        it ("Exists", function () {
+            assert.isDefined(url);
+            assert.isFunction(url);
+        });
+        it ("Has the prefix method (getter/setter)", function () {
+            var prefix = "my/prefix";
+            assert.isDefined(url.prefix);
+            assert.isFunction(url.prefix);
+            url.prefix(prefix);
+            assert.equal(url.prefix(), prefix);
+        });
+
+        it ("Has the endpoint method (getter/setter)", function () {
+            var endpoint = "/my/:endpoint/";
+            assert.isDefined(url.endpoint);
+            assert.isFunction(url.endpoint);
+            url.endpoint(endpoint);
+            assert.equal(url.endpoint(), endpoint);
+        });
+
+        it("Has a domain method (getter/setter)", function () {
+            var domain = "mydomain";
+            assert.isDefined(url.domain);
+            assert.isFunction(url.domain);
+            url.domain(domain);
+            assert.equal(url.domain(), domain);
+        });
+
+        it("Has a port method (getter/setter)", function () {
+            var port = 4444;
+            assert.isDefined(url.port);
+            assert.isFunction(url.port);
+            url.port(port);
+            assert.equal(url.port(), port);
+        });
+
+        it("Has the parameters method (getter/setter)", function () {
+            assert.isDefined(url.parameters);
+            assert.isFunction(url.parameters);
+            url.parameters({
+                "option1": 1,
+                "option2": 2
+            });
+            var p = url.parameters();
+            assert.property(p, "option1");
+            assert.equal(p.option1, 1);
+            assert.equal(p.option2, 2);
+        });
+
+        it ("Formats the url", function () {
+            url
+                .domain("rest.ensembl.org")
                 .endpoint("xrefs/symbol/:species/:id")
                 .parameters({
                     "species": "human",
                     "id": "BRCA1",
                     "object_type": "gene"
                 });
-            var url = rest.url();
+            var urlStr = url();
+            assert.isDefined(urlStr);
+            assert.equal(typeof(urlStr), "string");
+        });
+    });
+
+    describe ("api", function () {
+        beforeEach(function () {
+            url = rest.url()
+                .domain("rest.ensembl.org")
+                .endpoint("xrefs/symbol/:species/:id")
+                .parameters({
+                    "species": "human",
+                    "id": "BRCA1",
+                });
+
+        });
+
+        it("Exists and is called rest", function () {
+            assert.isDefined(tnt_rest);
+        });
+
+        it("Has a call method", function () {
+            assert.isDefined(tnt_rest.call);
+            assert.isFunction(tnt_rest.call);
+        });
+
+        it ("Accepts a string as parameter", function (done) {
+            var urlStr = url();
+            console.log(urlStr);
+            rest.call(url)
+                .then(function (resp) {
+                    console.log(resp);
+                    assert.isArray(resp.body);
+                    assert.notEqual(resp.body.length, 0);
+                    done();
+                });
+        });
+
+        it ("Accepts non json responses", function (done) {
+            var url = "http://rest.ensembl.org/xrefs/symbol/homo_sapiens/BRCA2?content-type=text/xml";
+            rest.call(url)
+                .then (function (resp) {
+                    var data = resp.body;
+                    assert.isDefined(data);
+                    assert.equal(typeof(data), "string");
+
+                    var doc = new xmldoc.XmlDocument(data);
+                    assert.equal(doc.name, "opt");
+                    done();
+                });
+        });
+
+        it ("Accepts a url object as parameter", function (done) {
             rest.call(url)
                 .then (function (resp) {
                     assert.isArray(resp.body);
                     assert.notEqual(resp.body.length, 0);
-                    setTimeout(done, delay);
+                    console.log(resp.body.length);
+                    done();
                 });
+        });
+
+        it ("Makes POST request if a second parameter is passed", function (done) {
+            var url = rest.url()
+                .domain("rest.ensembl.org")
+                .endpoint("lookup/id");
+
+            rest.call(url, {
+                    "ids" : ["ENSG00000157764", "ENSG00000248378" ]
+                })
+                .then (function (resp) {
+                    assert.isDefined (resp.body);
+                    assert.isDefined (resp.body.ENSG00000157764);
+                    assert.isDefined (resp.body.ENSG00000248378);
+                    done();
+                });
+        });
+
+
+        it ("can reuse the same rest instance for different urls", function (done) {
+            var getGene = function () {
+                var xrefsUrl = rest.url()
+                    .domain("rest.ensembl.org")
+                    .endpoint("xrefs/symbol/:species/:id")
+                    .parameters({
+                        "species": "human",
+                        "id": "BRCA1",
+                        "object_type": "gene"
+                    });
+                return rest.call(xrefsUrl);
+            };
+
+            var parseGene = function (resp) {
+                var info = resp.body;
+                assert.isArray(info);
+                assert.notEqual(info.length, 0);
+                var genes = info.filter (function (g) {
+                    return g.id.substring(0, 4) === "ENSG";
+                });
+                return genes[0].id;
+            };
+
+            var getGeneTree = function (id) {
+                var geneTreeUrl = rest.url()
+                    .domain("rest.ensembl.org")
+                    .endpoint("genetree/member/id/:id")
+                    .parameters({
+                        "id": id
+                    });
+                return rest.call(geneTreeUrl);
+            };
+
+            getGene()
+                .then(parseGene)
+                .then (getGeneTree)
+                .then (function (resp) {
+                    var tree = resp.body;
+                    assert.isDefined(tree);
+                    assert.isObject(tree);
+                    assert.hasProperty(tree, "type");
+                    assert.equal(tree.type, "gene tree");
+                    done();
+                });
+
         });
     });
 

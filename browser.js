@@ -1,1 +1,5 @@
-module.exports = tnt_ensembl = require("./index.js");
+if (typeof tnt === "undefined") {
+    module.exports = tnt = {};
+}
+tnt.rest = require("./index.js");
+
