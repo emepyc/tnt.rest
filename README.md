@@ -115,7 +115,7 @@ Specifies the <i>path</i> field in the <i>URI</i>. If the endpoint string contai
 ```javascript
 var rest = tnt.rest();
 var url = rest.url()
-    .endpoint(""xrefs/symbol/:species/:id"")
+    .endpoint("xrefs/symbol/:species/:id")
     .parameters({
         "species" : "human",
         "id"      : "BRCA1"
@@ -123,7 +123,17 @@ var url = rest.url()
 ```
 
 ##### parameters
-Fills the optional arguments specified in the ```endpoint``` method.
+Sets the ```endpoint``` arguments and optional parameters in the <i>URI</i>. It accepts an object whose properties are the name of the argument / parameter and the values their value. Array values are allowed making the parameter to be repeated as many times as items are in the array.
+```javascript
+var rest = tnt.rest();
+var url = rest.url()
+    .endpoint("xrefs/symbol/:species/:id")
+    .parameters({
+        "species" : "human",
+        "id"      : "BRCA1",
+        "feature" : ["gene", "cds"]
+    });
+```
 
 ##### fragment
 Sets an optional fragment for the URI (ie, the anchor after the "#" in a URI).

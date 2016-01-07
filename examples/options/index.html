@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<head>
+    <script src="../../build/tnt.rest.js"></script>
+</head>
+
+<body>
+    <div id="mydiv"></div>
+    <script>
+    var rest = tnt.rest();
+    var url = rest.url()
+        .domain("rest.ensembl.org")
+        .endpoint("overlap/region/:species/:region")
+        .parameters({
+            "species": "human",
+            "region": "13:50000000-50001000",
+            "feature": "gene"
+        });
+
+    rest.call(url)
+        .then (function (resp) {
+            console.log(resp);
+            var data = resp.body;
+            document.getElementById("mydiv").appendChild(document.createElement("pre")).innerText=JSON.stringify(data, null, '  ');
+        });
+    </script>
+</body>

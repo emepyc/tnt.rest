@@ -20,7 +20,6 @@ tnt_rest = function () {
         } else {
             myurl = url();
         }
-        console.log("MYURL:" + myurl);
         if (data) { // POST
             return http.post ({
                 "url": myurl,
