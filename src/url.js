@@ -1,13 +1,13 @@
 var apijs = require("tnt.api");
 
-var urlModule = function () {    
+var urlModule = function () {
     var paramPattern = /:\w+/g;
 
     var config = {
-        prefix: "",
-        protocol: "http",
-        domain: "",
-        port: "",
+        _prefix: "",
+        _protocol: "http",
+        _domain: "",
+        _port: "",
         endpoint: "",
         parameters: {},
         fragment: ""
@@ -18,17 +18,17 @@ var urlModule = function () {
         return getUrl();
     };
 
-    var api = apijs (url);
-    api.getset(config);
+    var api = apijs (url)
+        .getset(config);
 
     // Checks if the value is a string or an array
     // If array, recurse over all the available values
     function query1 (key) {
         var val = config.parameters[key];
-        if (typeof val ===  "string") {
+        if (!Array.isArray(val)) {
             return val;
         }
-        // Assume array
+        // It is an array
         var val1 = val.shift();
          if (val.length) {
             return val1 + "&" + key + "=" + query1(key);
@@ -58,7 +58,7 @@ var urlModule = function () {
             return param;
         });
 
-        var url = config.prefix + config.protocol + "://" + config.domain + (config.port ? ":" + port : "") + "/" + substEndpoint + queryString() + (config.fragment ? "#" + config.fragment : "");
+        var url = config._prefix + config._protocol + "://" + config._domain + (config._port ? ":" + port : "") + "/" + substEndpoint + queryString() + (config.fragment ? "#" + config.fragment : "");
         return url;
     }
 

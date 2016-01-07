@@ -7,9 +7,10 @@
 <body>
     <div id="mydiv"></div>
     <script>
-    var rest = tnt.rest();
-    var url = rest.url()
+    var rest = tnt.rest()
         .domain("rest.ensembl.org")
+
+    var url = rest.url()
         .endpoint("overlap/region/:species/:region")
         .parameters({
             "species": "human",

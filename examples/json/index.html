@@ -7,9 +7,9 @@
 <body>
     <div id="mydiv"></div>
     <script>
-    var rest = tnt.rest();
+    var rest = tnt.rest()
+        .domain("rest.ensembl.org");
     var url = rest.url()
-        .domain("rest.ensembl.org")
         .endpoint("xrefs/symbol/:species/:id")
         .parameters({
             "species": "human",
