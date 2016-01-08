@@ -1,0 +1,5 @@
+0.1.0
+	Added travis-ci
+	updated LICENSE
+	Added minified lib
+	Fixed tests and added more

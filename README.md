@@ -81,7 +81,7 @@ var rest = tnt.rest()
 ```
 
 #### call
-Performs a call using the provided <i>url</i>. By default a <i>GET</i> request is made. The first argument is mandatory and can be a string specifying the complete <i>URI</i> for the resource or a `tnt.rest.url` instance (see below). If the former any ```prefix```, ```protocol```, ```domain``` and ```port``` set via the API are ignored. If the latter those options are used to build the resource <i>URI</i>. If a second argument is provided and is an object a <i>POST</i> request is made using this object as its post data. The method returns an <i>ES6-compliant promise</i> that can be chained via its <i>then</i> method.
+Performs a call using the provided <i>url</i>. By default a <i>GET</i> request is made. The first argument is mandatory and can be a string specifying the complete <i>URI</i> for the resource or a `tnt.rest.url` instance (see below). If the former any ```prefix```, ```protocol```, ```domain``` and ```port``` set via the API are ignored. If the latter those options are used to build the resource <i>URI</i>. If a second argument is provided and is an object a <i>POST</i> request is made using this object as its post data. The method returns an <i>ES6-compliant promise</i> that can be chained via its <i>then</i> method and errors are catchable via its <i>catch</i> method.
 
 Example of <i>GET</i> request:
 ```javascript
@@ -89,6 +89,9 @@ var rest = tnt.rest();
 rest.call("http://rest.ensembl.org/xrefs/symbol/homo_sapiens/BRCA2?content-type=text/xml")
     .then (function (resp) {
         // do something with resp
+    })
+    .catch(function (err) {
+        // do something with err
     })
 ```
 
@@ -106,7 +109,7 @@ rest.call("http://rest.ensembl.org/lookup/id?content-type=application/json", {
 #### tnt.rest.url
 
 `tnt.rest.url` provides an interface to build <i>URI</i>s using its API. Using this API is not mandatory since you can pass directly the URI string to the ```call``` method (see above for examples).
-The returned ```url``` instance exposes several methods explained below. It is a function itself that when executed returns the resource URI.
+The returned ```url``` instance exposes several methods explained below.
 
 ```javascript
 var rest = tnt.rest()
@@ -121,13 +124,6 @@ rest.call(url)
     .then (function (resp) {
         // do something with resp
     });
-
-// The following would be equivalent
-// since executing url returns the built URI
-rest.call(url())
-    .then (function (resp) {
-        // do something with resp
-    })
 ```
 
 ##### endpoint

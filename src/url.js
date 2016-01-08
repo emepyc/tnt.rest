@@ -10,7 +10,8 @@ var urlModule = function () {
         _port: "",
         endpoint: "",
         parameters: {},
-        fragment: ""
+        fragment: "",
+        rest: undefined
     };
 
     // URL Method
