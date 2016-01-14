@@ -11,7 +11,7 @@ npm install --save tnt.rest
 
 or from Git:
 ```bash
-git clone https://github.com/emepyc/tnt.rest
+git clone https://github.com/tntvis/tnt.rest
 cd tnt.rest
 npm install
 npm build-browser
@@ -158,4 +158,4 @@ Sets an optional fragment for the URI (ie, the anchor after the "#" in a URI).
 
 ## Feedback
 
-Please, send any comments to emepyc@gmail.com. Bug reports and feature requests are welcome in the [issue tracker](https://github.com/emepyc/tnt.rest/issues)
+Please, send any comments to emepyc@gmail.com. Bug reports and feature requests are welcome in the [issue tracker](https://github.com/tntvis/tnt.rest/issues)
