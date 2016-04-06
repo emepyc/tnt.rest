@@ -3,3 +3,5 @@
 	updated LICENSE
 	Added minified lib
 	Fixed tests and added more
+0.1.1
+	Avoid inserting "://" if the protocol is empty

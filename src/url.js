@@ -59,7 +59,7 @@ var urlModule = function () {
             return param;
         });
 
-        var url = config._prefix + config._protocol + "://" + config._domain + (config._port ? ":" + port : "") + "/" + substEndpoint + queryString() + (config.fragment ? "#" + config.fragment : "");
+        var url = config._prefix + (config._protocol ? (config._protocol + "://") : "") + config._domain + (config._port ? (":" + config._port) : "") + "/" + substEndpoint + queryString() + (config.fragment ? ("#" + config.fragment) : "");
         return url;
     }
 
